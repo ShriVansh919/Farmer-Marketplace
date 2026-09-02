@@ -10,7 +10,7 @@ SharedPreferences.
 - Register / Login with form validation (seeded demo account `demo@kisaan.in` / `demo123`)
 - Home: branding header, search bar, promo banner, category chips, featured product grid
 - Search tab with real-time keyword filtering
-- Product catalogue (26 products across 5 categories) with details screen
+- Product catalogue (26 products across 5 categories) with details screen and bundled images
 - Cart: add/remove, quantity +/-, live totals, checkout dialog
 - Orders: persisted order history with status
 - Profile: user details, dark-theme toggle, logout

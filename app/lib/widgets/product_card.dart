@@ -19,11 +19,6 @@ class _ProductCardState extends State<ProductCard> {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: theme.dividerColor),
-      ),
       child: InkWell(
         onTap: widget.onTap,
         child: Column(
@@ -89,12 +84,18 @@ class _ProductCardState extends State<ProductCard> {
     if (url.isEmpty) {
       return _emojiBackdrop(theme);
     }
-    return Image.network(
-      url,
-      fit: BoxFit.cover,
-      errorBuilder: (_, _, _) => _emojiBackdrop(theme),
-      loadingBuilder: (context, child, progress) =>
-          progress == null ? child : _emojiBackdrop(theme),
+    return SizedBox.expand(
+      child: DecoratedBox(
+        position: DecorationPosition.background,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+        ),
+        child: Image.asset(
+          'assets/images/${widget.product.id}.jpg',
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => _emojiBackdrop(theme),
+        ),
+      ),
     );
   }
 

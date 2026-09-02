@@ -2,29 +2,36 @@ import 'package:flutter/material.dart';
 
 import '../models/product.dart';
 import 'product_card.dart';
+import 'state_views.dart';
+
+int responsiveColumns(BuildContext context) {
+  final width = MediaQuery.of(context).size.width;
+  if (width >= 900) return 4;
+  if (width >= 600) return 3;
+  return 2;
+}
 
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
   final void Function(Product) onTap;
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
 
   const ProductGrid({
     super.key,
     required this.products,
     required this.onTap,
+    this.shrinkWrap = false,
+    this.physics,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (products.isEmpty) {
-      return const _EmptyGrid();
-    }
-    final columns = MediaQuery.of(context).size.width >= 800
-        ? 4
-        : MediaQuery.of(context).size.width >= 520
-            ? 3
-            : 2;
+    final columns = responsiveColumns(context);
     return GridView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      shrinkWrap: shrinkWrap,
+      physics: physics,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: columns,
         mainAxisSpacing: 12,
@@ -40,20 +47,15 @@ class ProductGrid extends StatelessWidget {
   }
 }
 
-class _EmptyGrid extends StatelessWidget {
-  const _EmptyGrid();
+class GridEmptyView extends StatelessWidget {
+  const GridEmptyView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.search_off, size: 56, color: Colors.grey),
-          SizedBox(height: 12),
-          Text('No products found'),
-        ],
-      ),
+    return const EmptyStateView(
+      icon: Icons.search_off,
+      title: 'No products found',
+      subtitle: 'Try a different keyword or category.',
     );
   }
 }

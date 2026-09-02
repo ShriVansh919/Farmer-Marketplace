@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import '../widgets/auth_header.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
 
@@ -59,26 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(Icons.spa, size: 72, color: Color(0xFF2E7D32)),
-                  const SizedBox(height: 8),
-                  const Text('Kisaan Bazaar',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2E7D32))),
-                  const SizedBox(height: 4),
-                  const Text('Sign in to start shopping',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey)),
-                  const SizedBox(height: 28),
+                  const AuthHeader(subtitle: 'Sign in to start shopping'),
                   TextFormField(
                     controller: _emailCtrl,
                     keyboardType: TextInputType.emailAddress,
+                    autofillHints: const [AutofillHints.email],
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(),
                     ),
                     validator: (v) {
                       final value = v?.trim() ?? '';
@@ -93,10 +82,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: _passwordCtrl,
                     obscureText: _obscure,
+                    autofillHints: const [AutofillHints.password],
                     decoration: InputDecoration(
                       labelText: 'Password',
                       prefixIcon: const Icon(Icons.lock_outline),
-                      border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
                             _obscure ? Icons.visibility_off : Icons.visibility),

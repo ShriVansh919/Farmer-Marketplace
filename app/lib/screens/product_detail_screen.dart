@@ -62,8 +62,8 @@ class ProductDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 2),
               child: Row(
                 children: [
-                  const Icon(Icons.location_on_outlined,
-                      size: 14, color: Colors.grey),
+                  Icon(Icons.location_on_outlined,
+                      size: 14, color: theme.colorScheme.outline),
                   const SizedBox(width: 4),
                   Text(product.location, style: theme.textTheme.bodySmall),
                 ],
@@ -117,12 +117,18 @@ class _Art extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: product.imageUrl.isEmpty
             ? _art(theme)
-            : Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => _art(theme),
-                loadingBuilder: (context, child, progress) =>
-                    progress == null ? child : _art(theme),
+            : SizedBox.expand(
+                child: DecoratedBox(
+                  position: DecorationPosition.background,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+                  ),
+                  child: Image.asset(
+                    'assets/images/${product.id}.jpg',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => _art(theme),
+                  ),
+                ),
               ),
       ),
     );
@@ -168,8 +174,11 @@ class _StockBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
     final low = stock < 50;
-    final color = low ? Colors.orange : Colors.green;
+    final color = low
+        ? (dark ? Colors.orange.shade300 : Colors.orange.shade700)
+        : (dark ? Colors.green.shade300 : Colors.green.shade700);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_provider.dart';
 import '../providers/orders_provider.dart';
+import '../widgets/product_thumb.dart';
+import '../widgets/state_views.dart';
 
 class CartScreen extends StatelessWidget {
   final VoidCallback onOrderPlaced;
@@ -15,7 +17,14 @@ class CartScreen extends StatelessWidget {
     final orders = context.read<OrdersProvider>();
 
     if (cart.isEmpty) {
-      return const _EmptyCart();
+      return Scaffold(
+        appBar: AppBar(title: const Text('My Cart')),
+        body: const EmptyStateView(
+          icon: Icons.remove_shopping_cart_outlined,
+          title: 'Your cart is empty',
+          subtitle: 'Browse products and add items to your cart.',
+        ),
+      );
     }
 
     return Scaffold(
@@ -78,26 +87,11 @@ class _CartItemTile extends StatelessWidget {
     final theme = Theme.of(context);
     final cart = context.read<CartProvider>();
     return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: theme.dividerColor),
-      ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              alignment: Alignment.center,
-              child: Text(item.product.image,
-                  style: const TextStyle(fontSize: 30)),
-            ),
+            ProductThumb(product: item.product, size: 56, radius: 10),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -198,31 +192,6 @@ class _SummaryBar extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 14)),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EmptyCart extends StatelessWidget {
-  const _EmptyCart();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('My Cart')),
-      body: const Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.remove_shopping_cart_outlined,
-                size: 64, color: Colors.grey),
-            SizedBox(height: 12),
-            Text('Your cart is empty'),
-            SizedBox(height: 4),
-            Text('Browse products and add items to your cart.',
-                style: TextStyle(color: Colors.grey)),
           ],
         ),
       ),

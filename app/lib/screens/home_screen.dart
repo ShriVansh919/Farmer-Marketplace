@@ -5,8 +5,9 @@ import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
 import '../widgets/category_chip.dart';
-import '../widgets/product_card.dart';
+import '../widgets/product_grid.dart';
 import '../widgets/promo_banner.dart';
+import '../widgets/state_views.dart';
 import 'cart_screen.dart';
 import 'orders_screen.dart';
 import 'product_detail_screen.dart';
@@ -117,7 +118,7 @@ class _HomeTabState extends State<_HomeTab> {
                 return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasError) {
-                return _LoadError(
+                return ErrorStateView(
                   onRetry: () => context.read<ProductProvider>().retry(),
                 );
               }
@@ -125,6 +126,9 @@ class _HomeTabState extends State<_HomeTab> {
               final filtered = _selectedCategory == 'All'
                   ? all
                   : all.where((p) => p.category == _selectedCategory).toList();
+              if (filtered.isEmpty) {
+                return const GridEmptyView();
+              }
               return RefreshIndicator(
                 onRefresh: () async {
                   context.read<ProductProvider>().retry();
@@ -168,25 +172,11 @@ class _HomeTabState extends State<_HomeTab> {
                           style: theme.textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold)),
                     ),
-                    GridView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                    ProductGrid(
+                      products: filtered,
+                      onTap: (p) => widget.onOpenProduct(p),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        childAspectRatio: 0.72,
-                      ),
-                      itemCount: filtered.length,
-                      itemBuilder: (context, i) {
-                        final product = filtered[i];
-                        return ProductCard(
-                          product: product,
-                          onTap: () => widget.onOpenProduct(product),
-                        );
-                      },
                     ),
                   ],
                 ),
@@ -242,9 +232,6 @@ class _SearchTabState extends State<_SearchTab> {
                         setState(() => _query = '');
                       },
                     ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
             ),
           ),
         ),
@@ -257,7 +244,9 @@ class _SearchTabState extends State<_SearchTab> {
                 return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasError) {
-                return const Center(child: Text('Failed to load products'));
+                return ErrorStateView(
+                  onRetry: () => context.read<ProductProvider>().retry(),
+                );
               }
               final all = snapshot.data ?? const <Product>[];
               final results = _query.isEmpty
@@ -267,23 +256,12 @@ class _SearchTabState extends State<_SearchTab> {
                           p.name.toLowerCase().contains(_query) ||
                           p.category.toLowerCase().contains(_query))
                       .toList();
-              return GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 0.72,
-                ),
-                itemCount: results.length,
-                itemBuilder: (context, i) {
-                  final product = results[i];
-                  return ProductCard(
-                    product: product,
-                    onTap: () => widget.onOpenProduct(product),
-                  );
-                },
+              if (results.isEmpty) {
+                return const Center(child: GridEmptyView());
+              }
+              return ProductGrid(
+                products: results,
+                onTap: (p) => widget.onOpenProduct(p),
               );
             },
           ),
@@ -341,7 +319,7 @@ class _BrandHeader extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.95),
+                color: scheme.surfaceContainerHigh.withValues(alpha: 0.95),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Row(
@@ -354,27 +332,6 @@ class _BrandHeader extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LoadError extends StatelessWidget {
-  final VoidCallback onRetry;
-  const _LoadError({required this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.error_outline, size: 56, color: Colors.grey),
-          const SizedBox(height: 12),
-          const Text('Could not load products'),
-          const SizedBox(height: 12),
-          FilledButton.tonal(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
     );
