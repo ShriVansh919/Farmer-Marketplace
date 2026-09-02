@@ -1,11 +1,29 @@
 # 🌾 Kisan Bazaar — Flutter Agricultural Marketplace
 
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?logo=android&logoColor=white&style=for-the-badge)](#download-the-app)
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 A classroom Flutter project: a mobile-first digital marketplace for agricultural
 produce (vegetables, fruits, grains, dairy, organic). Built with Flutter + Provider,
 fully local & offline — products load from bundled JSON, images ship with the app,
 and session/order state persist via SharedPreferences.
 
 > Demo account: `demo@kisaan.in` / `demo123`
+
+---
+
+## 📲 Download the app
+
+**[⬇️ Download KisanBazaar.apk](https://github.com/ShriVansh919/Farmer-Marketplace/releases/download/v1.0.0/KisanBazaar.apk)**
+
+The latest installable Android build (v1.0.0) is published as a GitHub Release asset.
+Install it on any Android phone/emulator and start browsing produce.
+
+> ⚠️ You'll see a "install from unknown source" prompt — this is a self-signed classroom
+> build, so allow the install from your browser/file manager.
+
+---
 
 ## Features
 - Splash screen with session restore
