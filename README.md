@@ -1,57 +1,49 @@
 # 🌾 Kisan Bazaar — Flutter Agricultural Marketplace
 
-[![Download APK](https://img.shields.io/badge/Download-APK-blue?logo=android&logoColor=white&style=for-the-badge)](#download-the-app)
+A mobile-first digital marketplace that connects farmers and buyers for agricultural produce (vegetables, fruits, grains, dairy, organic). Built with Flutter + Provider, fully offline-capable, and packaged as an installable Android APK.
+
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![APK](https://img.shields.io/badge/Download-APK-blue?logo=android&logoColor=white)](#installation)
 
-A classroom Flutter project: a mobile-first digital marketplace for agricultural
-produce (vegetables, fruits, grains, dairy, organic). Built with Flutter + Provider,
-fully local & offline — products load from bundled JSON, images ship with the app,
-and session/order state persist via SharedPreferences.
+## What it does
 
-> Demo account: `demo@kisaan.in` / `demo123`
+Kisan Bazaar solves a real problem: small farmers need a simple, low-data way to list and sell produce without depending on intermediaries. The app runs completely offline — product data ships as bundled JSON, images are stored locally, and user sessions persist via SharedPreferences.
 
----
+Demo account: `demo@kisaan.in` / `demo123`
 
-## 📲 Download the app
+## Key features
 
-**[⬇️ Download KisanBazaar.apk](https://github.com/ShriVansh919/Farmer-Marketplace/releases/download/v1.0.0/KisanBazaar.apk)**
+- Offline-first product catalogue (26 products across 5 categories)
+- Real-time search and category filtering
+- Shopping cart with quantity controls and live totals
+- Order history with status tracking
+- Dark/light theme toggle
+- Form-validated auth with session persistence
+- Material Design 3 with green seed theme
 
-The latest installable Android build (v1.0.0) is published as a GitHub Release asset.
-Install it on any Android phone/emulator and start browsing produce.
+## Architecture
 
-> ⚠️ You'll see a "install from unknown source" prompt — this is a self-signed classroom
-> build, so allow the install from your browser/file manager.
-
----
-
-## Features
-- Splash screen with session restore
-- Register / Login with form validation (seeded demo account `demo@kisaan.in` / `demo123`)
-- Home: branding header, search bar, promo banner, category chips, featured product grid
-- Search tab with real-time keyword filtering
-- Product catalogue (26 products across 5 categories) with details screen and bundled images
-- Cart: add/remove, quantity +/-, live totals, checkout dialog
-- Orders: persisted order history with status
-- Profile: user details, dark-theme toggle, logout
-
-## Team structure
-| #  | Module               | Responsibility                                                |
-|----|----------------------|---------------------------------------------------------------|
-| 1  | Authentication       | Splash, Login, Register, Logout, SharedPreferences session    |
-| 2  | Home                 | Dashboard, Search bar, Categories, Featured, Bottom navigation|
-| 3  | Products             | List, Details, Dummy JSON, Product model, FutureBuilder       |
-| 4  | Cart & Orders        | Cart, Checkout, Orders, Quantity +/-, Total (Provider)        |
-| 5  | Profile & Integration| Profile, Theme, Final testing, Git/GitHub merge               |
-
-## Tech stack
-**Flutter · Dart · Material Design 3 · Provider · SharedPreferences · JSON · Git/GitHub** — plus `intl` for date formatting.
-
-## Screens
-9 screens: Splash · Login · Register · Home · Search · Product Details · Cart · Orders · Profile.
+```
+app/
+  assets/
+    json/products.json      # 26-product catalogue
+    images/                 # 26 bundled product photos
+  lib/
+    models/                 # Product, CartItem, Order, AppUser
+    data/                   # ProductRepository (rootBundle JSON)
+    providers/              # Auth, Cart, Orders, Theme, Products
+    screens/                # 9 screens: Splash, Login, Register, Home,
+                            # Search, ProductDetail, Cart, Orders, Profile
+    widgets/                # Reusable UI components
+    main.dart               # Provider wiring + Material 3 theme
+  test/                     # Widget + unit tests
+  docs/                     # Proposal, report, presentation, viva prep
+```
 
 ## How to run
-```sh
+
+```bash
 cd app
 flutter pub get
 flutter analyze        # static analysis (0 issues)
@@ -60,29 +52,20 @@ flutter run            # on a connected device / emulator
 flutter build apk --release
 ```
 
-## Project layout
-```
-app/
-  assets/
-    json/products.json   # 26-product catalogue (vegetables, fruits, grains, dairy, organic)
-    images/              # 26 bundled product photos (offline-safe)
-  lib/
-    models/              # Product, CartItem, Order, AppUser
-    data/                # ProductRepository (rootBundle JSON load)
-    providers/           # Auth, Cart, Orders, Theme, Products
-    screens/             # Splash, Login, Register, Home, Search,
-                         # ProductDetail, Cart, Orders, Profile
-    widgets/             # ProductCard, ProductGrid, CategoryChip, PromoBanner,
-                         # AuthHeader, ProductThumb, Empty/Error state views
-    main.dart            # Provider wiring + Material 3 theme (green seed)
-  test/widget_test.dart  # model/cart unit tests + splash smoke test
-docs/                    # Project_Proposal, Final_Report, Presentation,
-                         # DEMO_SCRIPT.md, VIVA_PREP.md
-```
+## Tech stack
 
-## Docs & deliverables
-- `docs/Project_Proposal.docx`
-- `docs/Final_Report.docx` (includes testing matrix and team table)
-- `docs/Presentation.pptx`
-- `docs/DEMO_SCRIPT.md` (shot-by-shot demo video script)
-- `docs/VIVA_PREP.md` (20 viva questions with answers)
+- Flutter 3.x · Dart · Material Design 3
+- Provider (state management)
+- SharedPreferences (session persistence)
+- JSON asset loading (offline data)
+- intl (date formatting)
+
+## Installation
+
+Download the APK from the [Releases page](https://github.com/ShriVansh919/Farmer-Marketplace/releases/tag/v1.0.0) and install it on any Android device. You may need to enable "Install from unknown sources" in your settings.
+
+## Deliverables
+
+- Project proposal and final report (DOCX)
+- Slide presentation (PPTX)
+- Demo script and viva preparation guide (Markdown)
